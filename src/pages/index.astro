@@ -16,9 +16,10 @@ const blogs = await response.json()
       <div class="mt-4">
         <p class="text-gray-600">{blog.description}</p>
       </div>
-      <button button-delete data-id={blog.id} class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+      <button button-delete data-id={blog.id} class="p-5 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
         delete
       </button>
+	  <button data-id={blog.id} button-edit class="p-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">edit</button>
     </div>
 		)
 	})
@@ -29,7 +30,6 @@ const blogs = await response.json()
 		buttonDelete.forEach((button) => {
 			button.addEventListener("click", async () => {
 				const id = button.getAttribute("data-id")
-				console.log(id)
 				await fetch(`https://be-ashen-beta.vercel.app/greet/${id}`, {
 					method: "DELETE",
 					headers: {
@@ -38,6 +38,14 @@ const blogs = await response.json()
 					}
 				})
 				window.location.reload()
+			})
+		})
+		const buttonEdit = document.querySelectorAll("[button-edit]")
+		buttonEdit.forEach((button) => {
+			button.addEventListener("click", async () => {
+				const id = button.getAttribute("data-id")
+				console.log(id)
+				window.location.href = `/edit/${id}`
 			})
 		})
 	</script>
