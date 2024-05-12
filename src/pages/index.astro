@@ -4,23 +4,41 @@ const title = "Homepage"
 const response = await fetch("https://be-ashen-beta.vercel.app/greet")
 const blogs = await response.json()
 
+
 ---
 <Layout title={title}>
 	<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 	{blogs.getData.data?.map((blog) => {
 		return (
-		<div class="bg-white border shadow p-4 rounded-md"  >
-			<h2 class="text-xl font-bold">{blog.title}</h2>
-			<div class="flex space-x-4 py-4">
-				<div class="flex-1">
-					<h3 class="text-lg font-semibold">Author by {blog.author}</h3>
-					<p class="text-sm text-gray-600">{blog.description}</p>
-				</div>
-				<button >delete</button>
-			</div>
-		</div>
+	<div class="bg-white border shadow-lg p-4 rounded-lg">
+      <h2 class="text-xl font-semibold">{blog.title}</h2>
+      <p>{blog.author}</p>
+      <div class="mt-4">
+        <p class="text-gray-600">{blog.description}</p>
+      </div>
+      <button button-delete data-id={blog.id} class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+        delete
+      </button>
+    </div>
 		)
 	})
 	}
 	</div>
+	<script>
+		const buttonDelete = document.querySelectorAll("[button-delete]")
+		buttonDelete.forEach((button) => {
+			button.addEventListener("click", async () => {
+				const id = button.getAttribute("data-id")
+				console.log(id)
+				await fetch(`https://be-ashen-beta.vercel.app/greet/${id}`, {
+					method: "DELETE",
+					headers: {
+						"Content-Type": "application/json"
+
+					}
+				})
+				window.location.reload()
+			})
+		})
+	</script>
 </Layout>
